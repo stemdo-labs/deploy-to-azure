@@ -19,7 +19,7 @@ permissions:
   contents: write
 
 jobs:
-  # Get the current step to only run the main job when the learner is on the same step.
+  # Get the current step to only run the stemdo job when the learner is on the same step.
   get_current_step:
     name: Check current step number
     runs-on: ubuntu-latest
@@ -70,3 +70,4 @@ jobs:
           from_step: 1
           to_step: 2
           branch_name: staging-workflow
+          base_branch_name: stemdo

@@ -1,44 +1,38 @@
-<!--
-  <<< Author notes: Step 1 >>>
-  Choose 3-5 steps for your course.
-  The first step is always the hardest, so pick something easy!
-  Link to docs.github.com for further explanations.
-  Encourage users to open new tabs for steps!
--->
+## Paso 1: Desencadenar un trabajo basado en etiquetas
 
-## Step 1: Trigger a job based on labels
+_¡Bienvenido al curso! :tada:_
 
-_Welcome to the course :tada:_
+![Captura de pantalla 2022-06-07 a las 4 01 43 PM](https://user-images.githubusercontent.com/6351798/172490466-00f27580-8906-471f-ae83-ef3b6370df7d.png)
 
-![Screen Shot 2022-06-07 at 4 01 43 PM](https://user-images.githubusercontent.com/6351798/172490466-00f27580-8906-471f-ae83-ef3b6370df7d.png)
+Muchas cosas intervienen en la entrega "continua". Estas cosas pueden ir desde la cultura y el comportamiento hasta la automatización específica. En este ejercicio, nos vamos a centrar en la parte de despliegue de nuestra automatización.
 
-A lot of things go into delivering "continuously". These things can range from culture and behavior to specific automation. In this exercise, we're going to focus on the deployment part of our automation.
+En un flujo de trabajo de GitHub Actions, el paso `on` define qué provoca que se ejecute el flujo de trabajo. En este caso, queremos que el flujo de trabajo ejecute diferentes tareas cuando se apliquen etiquetas específicas a una solicitud de extracción.
 
-In a GitHub Actions workflow, the `on` step defines what causes the workflow to run. In this case, we want the workflow to run different tasks when specific labels are applied to a pull request.
+Usaremos etiquetas como desencadenadores para múltiples tareas:
 
-We'll use labels as triggers for multiple tasks:
+- Cuando alguien aplique una etiqueta de "iniciar entorno" a una solicitud de extracción, eso le indicará a GitHub Actions que nos gustaría configurar nuestros recursos en un entorno de Azure.
+- Cuando alguien aplique una etiqueta de "etapa" a una solicitud de extracción, ese será nuestro indicador de que nos gustaría desplegar nuestra aplicación en un entorno de preparación.
+- Cuando alguien aplique una etiqueta de "destruir entorno" a una solicitud de extracción, desmontaremos cualquier recurso que se esté ejecutando en nuestra cuenta de Azure.
 
-- When someone applies a "spin up environment" label to a pull request, that'll tell GitHub Actions that we'd like to set up our resources on an Azure environment.
-- When someone applies a "stage" label to a pull request, that'll be our indicator that we'd like to deploy our application to a staging environment.
-- When someone applies a "destroy environment" label to a pull request, we'll tear down any resources that are running on our Azure account.
 
-### :keyboard: Activity 1: Configure `GITHUB_TOKEN` permissions
+### :keyboard: Actividad 1: Configurar los permisos de `GITHUB_TOKEN`
 
-At the start of each workflow run, GitHub automatically creates a unique `GITHUB_TOKEN` secret to use in your workflow. We need to make sure this token has the permissions required for this course.
+Al comienzo de cada ejecución de flujo de trabajo, GitHub crea automáticamente un secreto único `GITHUB_TOKEN` para usar en tu flujo de trabajo. Necesitamos asegurarnos de que este token tenga los permisos necesarios para este curso.
 
-1. Open a new browser tab, and work on the steps in your second tab while you read the instructions in this tab.
-1. Go to Settings > Actions > General. Ensure that the `GITHUB_TOKEN` also has **Read and write permissions** enabled under **Workflow permissions**. This is required for your workflow to be able to upload your image to the container registry.
+1. Abre una nueva pestaña del navegador y trabaja en los pasos en tu segunda pestaña mientras lees las instrucciones en esta pestaña.
+1. Ve a Configuración > Acciones > General. Asegúrate de que el `GITHUB_TOKEN` también tenga habilitados los **Read and write permissions** bajo **Workflow permissions**. Esto es necesario para que tu flujo de trabajo pueda cargar tu imagen en el registro de contenedores.
 
-### :keyboard: Activity 2: Configure a trigger based on labels
 
-For now, we'll focus on staging. We'll spin up and destroy our environment in a later step.
+### :keyboard: Actividad 2: Configurar un desencadenador basado en etiquetas
 
-1. Go to the **Actions** tab.
-1. Click **New workflow**
-1. Search for "simple workflow" and click **Configure**
-1. Name your workflow `deploy-staging.yml`
-1. Edit the contents of this file and remove all triggers and jobs.
-1. Edit the contents of the file to add a conditional that filters the `build` job when there is a label present called **stage**. Your resulting file should look like this:
+Por ahora, nos centraremos en la preparación. Iniciaremos y destruiremos nuestro entorno en un paso posterior.
+
+1. Ve a la pestaña **Actions**.
+1. Haz clic en **New workflow**.
+1. Busca "flujo de trabajo simple" y haz clic en **Configure**.
+1. Nombre tu flujo de trabajo `deploy-staging.yml`.
+1. Edita el contenido de este archivo y elimina todos los desencadenadores y trabajos.
+1. Edita el contenido del archivo para agregar una condición que filtre el trabajo `build` cuando haya una etiqueta presente llamada **stage**. Tu archivo resultante debería lucir así:
 
    ```yaml
    name: Stage the app
@@ -54,7 +48,7 @@ For now, we'll focus on staging. We'll spin up and destroy our environment in a 
        if: contains(github.event.pull_request.labels.*.name, 'stage')
    ```
 
-1. Click **Start commit**, and choose to make a new branch named `staging-workflow`.
-1. Click **Propose changes**.
-1. Click **Create pull request**.
-1. Wait about 20 seconds then refresh this page (the one you're following instructions from). [GitHub Actions](https://docs.github.com/en/actions) will automatically update to the next step.
+1. Haz clic en **Comenzar commit** y elige crear una nueva rama llamada `flujo-preparación`.
+1. Haz clic en **Proponer cambios**.
+1. Haz clic en **Crear solicitud de extracción**.
+1. Espera unos 20 segundos y luego actualiza esta página (la que estás siguiendo las instrucciones). [GitHub Actions](https://docs.github.com/en/actions) se actualizará automáticamente al siguiente paso.

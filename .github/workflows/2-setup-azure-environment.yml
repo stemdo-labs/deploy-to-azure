@@ -19,7 +19,7 @@ permissions:
   pull-requests: write
 
 jobs:
-  # Get the current step to only run the main job when the learner is on the same step.
+  # Get the current step to only run the stemdo job when the learner is on the same step.
   get_current_step:
     name: Check current step number
     runs-on: ubuntu-latest
@@ -105,8 +105,8 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      # Pull main.
-      - name: Pull main
+      # Pull stemdo.
+      - name: Pull stemdo
         run: |
           chmod +x ./.github/script/initialize-repository.sh
           ./.github/script/initialize-repository.sh
@@ -120,3 +120,4 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           from_step: 2
           to_step: 3
+          base_branch_name: stemdo

@@ -1,24 +1,19 @@
-<!--
-  <<< Author notes: Step 5 >>>
-  Start this step by acknowledging the previous step.
-  Define terms and link to docs.github.com.
--->
+## Paso 5: Despliegue en un entorno de producción basado en etiquetas
 
-## Step 5: Deploy to a production environment based on labels
+_¡Desplegado! :ship:_
 
-_Deployed! :ship:_
+### Bien hecho
 
-### Nicely done
+Como hemos hecho antes, crea una nueva rama llamada `production-deployment-workflow` desde `stemdo`. En el directorio `.github/workflows`, agrega un nuevo archivo titulado `deploy-prod.yml`. Este nuevo flujo de trabajo se ocupa específicamente de los commits a `stemdo` y maneja los despliegues a `prod`.
 
-As we've done before, create a new branch called `production-deployment-workflow` from `main`. In the `.github/workflows` directory, add a new file titled `deploy-prod.yml`. This new workflow deals specifically with commits to `main` and handles deployments to `prod`.
+**Entrega continua** (CD) es un concepto que contiene muchos comportamientos y otros conceptos más específicos. Uno de esos conceptos es **probar en producción**. Eso puede significar cosas diferentes para diferentes proyectos y empresas, y no es una regla estricta que diga que estás o no "haciendo CD".
 
-**Continuous delivery** (CD) is a concept that contains many behaviors and other, more specific concepts. One of those concepts is **test in production**. That can mean different things to different projects and different companies, and isn't a strict rule that says you are or aren't "doing CD".
+En nuestro caso, podemos igualar nuestro entorno de producción exactamente como nuestro entorno de preparación. Esto minimiza las oportunidades de sorpresas una vez que desplegamos en producción.
 
-In our case, we can match our production environment to be exactly like our staging environment. This minimizes opportunities for surprises once we deploy to production.
+### :keyboard: Actividad 1: Agregar desencadenadores al flujo de trabajo de despliegue de producción
 
-### :keyboard: Activity 1: Add triggers to production deployment workflow
+Copia y pega lo siguiente en tu archivo, y reemplaza cualquier marcador `<nombredeusuario>` con tu nombre de usuario de GitHub. Nota que no ha cambiado mucho de nuestro flujo de trabajo de preparación, excepto por nuestro desencadenador, y que no estaremos filtrando por etiquetas.
 
-Copy and paste the following to your file, and replace any `<username>` placeholders with your GitHub username. Note that not much has changed from our staging workflow, except for our trigger, and that we won't be filtering by labels.
 
 ```yaml
 name: Deploy to production
@@ -26,7 +21,7 @@ name: Deploy to production
 on:
   push:
     branches:
-      - main
+      - stemdo
 
 env:
   IMAGE_REGISTRY_URL: ghcr.io
@@ -123,15 +118,15 @@ jobs:
             az account clear
 ```
 
-1. Update every `<username>` to your GitHub username.
-1. Commit your changes to the `production-deployment-workflow` branch.
-1. Go to the Pull requests tab and click **Compare & pull request** for the `production-deployment-workflow` branch and create a Pull request.
+1. Actualiza cada `<nombredeusuario>` con tu nombre de usuario de GitHub.
+1. Haz commit de tus cambios en la rama `production-deployment-workflow`.
+1. Ve a la pestaña de Solicitudes de extracción y haz clic en **Comparar y crear solicitud de extracción** para la rama `production-deployment-workflow` y crea una solicitud de extracción.
 
-Great! The syntax you used tells GitHub Actions to only run that workflow when a commit is made to the main branch. Now we can put this workflow into action to deploy to production!
+¡Genial! La sintaxis que usaste indica a GitHub Actions que solo ejecute ese flujo de trabajo cuando se hace un commit a la rama stemdo. ¡Ahora podemos poner este flujo de trabajo en acción para desplegar en producción!
 
-### :keyboard: Activity 2: Merge your pull request
+### :keyboard: Actividad 2: Fusiona tu solicitud de extracción
 
-1. You can now [merge](https://docs.github.com/en/get-started/quickstart/github-glossary#merge) your pull request!
-1. Click **Merge pull request** and leave this tab open as we will be applying a label to the closed pull request in the next step.
-1. Now we just have to wait for the package to be published to GitHub Container Registry and the deployment to occur.
-1. Wait about 20 seconds then refresh this page (the one you're following instructions from). [GitHub Actions](https://docs.github.com/en/actions) will automatically update to the next step.
+1. ¡Ahora puedes [fusionar](https://docs.github.com/en/get-started/quickstart/github-glossary#merge) tu solicitud de extracción!
+1. Haz clic en **Fusionar solicitud de extracción** y deja esta pestaña abierta ya que aplicaremos una etiqueta a la solicitud de extracción cerrada en el siguiente paso.
+1. Ahora solo tenemos que esperar a que el paquete se publique en el Registro de Contenedores de GitHub y se realice el despliegue.
+1. Espera unos 20 segundos y luego actualiza esta página (la que estás siguiendo las instrucciones). [GitHub Actions](https://docs.github.com/en/actions) se actualizará automáticamente al siguiente paso.

@@ -1,16 +1,11 @@
-<!--
-  <<< Author notes: Step 2 >>>
-  Start this step by acknowledging the previous step.
-  Define terms and link to docs.github.com.
--->
+## Paso 2: Configurar un entorno de Azure
 
-## Step 2: Set up an Azure environment
+_¡Buen trabajo por comenzar! :gear:_
 
-_Good job getting started :gear:_
+### Buen trabajo al desencadenar un trabajo en etiquetas específicas
 
-### Nice work triggering a job on specific labels
+No entraremos en detalle en los pasos de este flujo de trabajo, pero sería una buena idea familiarizarse con las acciones que estamos utilizando. Son:
 
-We won't be going into detail on the steps of this workflow, but it would be a good idea to become familiar with the actions we're using. They are:
 
 - [`actions/checkout`](https://github.com/actions/checkout)
 - [`actions/upload-artifact`](https://github.com/actions/upload-artifact)
@@ -20,18 +15,23 @@ We won't be going into detail on the steps of this workflow, but it would be a g
 - [`azure/login`](https://github.com/Azure/login)
 - [`azure/webapps-deploy`](https://github.com/Azure/webapps-deploy)
 
-### :keyboard: Activity 1: Store your credentials in GitHub secrets and finish setting up your workflow
 
-1.  In a new tab, [create an Azure account](https://azure.microsoft.com/en-us/free/) if you don't already have one. If your Azure account is created through work, you may encounter issues accessing the necessary resources -- we recommend creating a new account for personal use and for this course.
-    > **Note**: You may need a credit card to create an Azure account. If you're a student, you may also be able to take advantage of the [Student Developer Pack](https://education.github.com/pack) for access to Azure. If you'd like to continue with the course without an Azure account, Skills will still respond, but none of the deployments will work.
-1.  Create a [new subscription](https://docs.microsoft.com/en-us/azure/cost-management-billing/manage/create-subscription) in the Azure Portal.
-    > **Note**: your subscription must be configured "Pay as you go" which will require you to enter billing information. This course will only use a few minutes from your free plan, but Azure requires the billing information.
-1.  Install [Azure CLI](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli?view=azure-cli-latest) on your machine.
-1.  In your terminal, run:
+
+### :keyboard: Actividad 1: Almacena tus credenciales en secretos de GitHub y termina de configurar tu flujo de trabajo
+
+1. En una pestaña nueva, [crea una cuenta en Azure](https://azure.microsoft.com/en-us/free/) si aún no tienes una. Si tu cuenta de Azure se creó a través del trabajo, es posible que encuentres problemas para acceder a los recursos necesarios; recomendamos crear una nueva cuenta para uso personal y para este curso.
+    > **Nota**: Es posible que necesites una tarjeta de crédito para crear una cuenta en Azure. Si eres estudiante, es posible que también puedas aprovechar el [Paquete de Desarrollador para Estudiantes](https://education.github.com/pack) para acceder a Azure. Si deseas continuar con el curso sin una cuenta en Azure, Skills seguirá respondiendo, pero ninguno de los despliegues funcionará.
+1. Crea una [nueva suscripción](https://docs.microsoft.com/en-us/azure/cost-management-billing/manage/create-subscription) en el Portal de Azure.
+    > **Nota**: tu suscripción debe configurarse como "Pagar según se usa", lo que requerirá que ingreses información de facturación. Este curso solo utilizará unos pocos minutos de tu plan gratuito, pero Azure requiere la información de facturación.
+1. Instala [Azure CLI](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli?view=azure-cli-latest) en tu máquina.
+
+1.  En tu terminal, ejecuta:
     ```shell
     az login
     ```
-1.  Copy the value of the `id:` field to a safe place. We'll call this `AZURE_SUBSCRIPTION_ID`. Here's an example of what it looks like:
+
+1. Copia el valor del campo `id:` a un lugar seguro. Lo llamaremos `AZURE_SUBSCRIPTION_ID`. Aquí tienes un ejemplo de cómo se ve:
+
     ```shell
     [
     {
@@ -48,8 +48,7 @@ We won't be going into detail on the steps of this workflow, but it would be a g
       }
     ]
     ```
-1.  In your terminal, run the command below.
-
+1. En tu terminal, ejecuta el siguiente comando.
     ````shell
     az ad sp create-for-rbac --name "GitHub-Actions" --role contributor \
      --scopes /subscriptions/{subscription-id} \
@@ -62,7 +61,8 @@ We won't be going into detail on the steps of this workflow, but it would be a g
 
     ````
 
-1.  Copy the entire contents of the command's response, we'll call this `AZURE_CREDENTIALS`. Here's an example of what it looks like:
+1. Copia todo el contenido de la respuesta del comando, lo llamaremos `AZURE_CREDENTIALS`. Aquí tienes un ejemplo de cómo se ve:
+
     ```shell
     {
       "clientId": "<GUID>",
@@ -72,16 +72,18 @@ We won't be going into detail on the steps of this workflow, but it would be a g
       (...)
     }
     ```
-1.  Back on GitHub, click on this repository's **Secrets and variables > Actions** in the Settings tab.
-1.  Click **New repository secret**
-1.  Name your new secret **AZURE_SUBSCRIPTION_ID** and paste the value from the `id:` field in the first command.
-1.  Click **Add secret**.
-1.  Click **New repository secret** again.
-1.  Name the second secret **AZURE_CREDENTIALS** and paste the entire contents from the second terminal command you entered.
-1.  Click **Add secret**
-1.  Go back to the Pull requests tab and in your pull request go to the **Files Changed** tab. Find and then edit the `.github/workflows/deploy-staging.yml` file to use some new actions.
 
-The full workflow file, should look like this:
+1. De regreso en GitHub, haz clic en **Secrets and variables > Actions** en la pestaña de Configuración.
+1. Haz clic en **New repository secret**.
+1. Nombra tu nuevo secreto **AZURE_SUBSCRIPTION_ID** y pega el valor del campo `id:` del primer comando.
+1. Haz clic en **Add secret**.
+1. Haz clic en **New repository secret** nuevamente.
+1. Nombra el segundo secreto **AZURE_CREDENTIALS** y pega todo el contenido del segundo comando que ingresaste en la terminal.
+1. Haz clic en **Add secret**.
+1. Regresa a la pestaña de Solicitudes de extracción y en tu solicitud de extracción ve a la pestaña **Files Changed**. Encuentra y luego edita el archivo `.github/workflows/deploy-staging.yml` para usar algunas acciones nuevas.
+
+El archivo completo del flujo de trabajo debería lucir así:
+
 
 ```yaml
 name: Deploy to staging
@@ -187,5 +189,5 @@ jobs:
             az account clear
 ```
 
-16. After you've edited the file, click **Commit changes...** and commit to the `staging-workflow` branch.
-17. Wait about 20 seconds then refresh this page (the one you're following instructions from). [GitHub Actions](https://docs.github.com/en/actions) will automatically update to the next step.
+16. Después de haber editado el archivo, haz clic en **Confirmar cambios...** y confirma en la rama `staging-workflow`.
+17. Espera unos 20 segundos y luego actualiza esta página (la que estás siguiendo las instrucciones). [GitHub Actions](https://docs.github.com/en/actions) se actualizará automáticamente al siguiente paso.

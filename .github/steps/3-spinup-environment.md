@@ -1,31 +1,27 @@
-<!--
-  <<< Author notes: Step 3 >>>
-  Start this step by acknowledging the previous step.
-  Define terms and link to docs.github.com.
--->
+## Paso 3: Iniciar un entorno basado en etiquetas
 
-## Step 3: Spin up an environment based on labels
+_¡Bien hecho! :heart:_
 
-_Nicely done! :heart:_
+GitHub Actions es agnóstico en la nube, por lo que cualquier nube funcionará. Mostraremos cómo desplegar en Azure en este curso.
 
-GitHub Actions is cloud agnostic, so any cloud will work. We'll show how to deploy to Azure in this course.
+**¿Qué son _los recursos de Azure_?** En Azure, un recurso es una entidad gestionada por Azure. Utilizaremos los siguientes recursos de Azure en este curso:
 
-**What are _Azure resources_?** In Azure, a resource is an entity managed by Azure. We'll use the following Azure resources in this course:
+- Una [aplicación web](https://docs.microsoft.com/en-us/azure/app-service/overview) es cómo desplegaremos nuestra aplicación en Azure.
+- Un [grupo de recursos](https://docs.microsoft.com/en-us/azure/azure-resource-manager/management/overview#resource-groups) es una colección de recursos, como aplicaciones web y máquinas virtuales (VMs).
+- Un [plan de App Service](https://docs.microsoft.com/en-us/azure/app-service/overview-hosting-plans) es lo que ejecuta nuestra aplicación web y gestiona la facturación (nuestra aplicación debería ejecutarse de forma gratuita).
 
-- A [web app](https://docs.microsoft.com/en-us/azure/app-service/overview) is how we'll be deploying our application to Azure.
-- A [resource group](https://docs.microsoft.com/en-us/azure/azure-resource-manager/management/overview#resource-groups) is a collection of resources, like web apps and virtual machines (VMs).
-- An [App Service plan](https://docs.microsoft.com/en-us/azure/app-service/overview-hosting-plans) is what runs our web app and manages the billing (our app should run for free).
+A través del poder de GitHub Actions, podemos crear, configurar y destruir estos recursos a través de nuestros archivos de flujo de trabajo.
 
-Through the power of GitHub Actions, we can create, configure, and destroy these resources through our workflow files.
 
-### :keyboard: Activity 1: Set up a personal access token (PAT)
+### :keyboard: Actividad 1: Configurar un token de acceso personal (PAT)
 
-Personal access tokens (PATs) are an alternative to using passwords for authentication to GitHub. We will use a PAT to allow your web app to pull the container image after your workflow pushes a newly built image to the registry.
+Los tokens de acceso personal (PAT) son una alternativa al uso de contraseñas para la autenticación en GitHub. Utilizaremos un PAT para permitir que tu aplicación web extraiga la imagen del contenedor después de que tu flujo de trabajo envíe una imagen recién creada al registro.
 
-1. Open a new browser tab, and work on the steps in your second tab while you read the instructions in this tab.
-2. Create a personal access token with the `repo` and `read:packages` scopes. For more information, see ["Creating a personal access token."](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token)
-3. Once you have generated the token we will need to store it in a secret so that it can be used within a workflow. Create a new repository secret named `CR_PAT` and paste the PAT token in as the value.
-4. With this done we can move on to setting up our workflow.
+1. Abre una nueva pestaña del navegador y trabaja en los pasos en tu segunda pestaña mientras lees las instrucciones en esta pestaña.
+2. Crea un token de acceso personal con los ámbitos `repo` y `read:packages`. Para obtener más información, consulta ["Creación de un token de acceso personal"](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token)
+3. Una vez que hayas generado el token, necesitaremos almacenarlo en un secreto para que pueda ser utilizado dentro de un flujo de trabajo. Crea un nuevo secreto del repositorio llamado `CR_PAT` y pega el token PAT como valor.
+4. Con esto hecho, podemos pasar a configurar nuestro flujo de trabajo.
+
 
 **Configuring your Azure environment**
 
@@ -35,6 +31,16 @@ To deploy successfully to our Azure environment:
 2. Once you're in the new `azure-configuration` branch, go into the `.github/workflows` directory and create a new file titled `spinup-destroy.yml` by clicking **Add file**.
 
 Copy and paste the following into this new file:
+
+**Configurando tu entorno de Azure**
+
+Para desplegar con éxito en nuestro entorno de Azure:
+
+1. Crea una nueva rama llamada `azure-configuration` haciendo clic en el menú desplegable de ramas en la esquina superior izquierda de la pestaña `Code` en la página de tu repositorio.
+2. Una vez que estés en la nueva rama `cazure-configuration`, ve al directorio `.github/workflows` y crea un nuevo archivo titulado `spinup-destroy.yml` haciendo clic en **Añadir archivo**.
+
+Copia y pega lo siguiente en este nuevo archivo:
+
 
 ```yaml
 name: Configure Azure environment
@@ -106,43 +112,47 @@ jobs:
           az group delete --name ${{env.AZURE_RESOURCE_GROUP}} --subscription ${{secrets.AZURE_SUBSCRIPTION_ID}} --yes
 ```
 
-3. Click **Commit changes...** and select `Commit directly to the azure-configuration branch.` before clicking **Commit changes**.
-4. Go to the Pull requests tab of the repository.
-5. There should be a yellow banner with the `azure-configuration` branch where you can click **Compare & pull request**.
-6. Set the title of the Pull request to: `Added spinup-destroy.yml workflow` and click `Create pull request`.
+3. Haz clic en **Confirmar cambios...** y selecciona `Commit directly to the azure-configuration branch.` antes de hacer clic en **Confirmar cambios**.
+4. Ve a la pestaña de Solicitudes de extracción del repositorio.
+5. Debería haber un banner amarillo con la rama `azure-configuration` donde puedes hacer clic en **Comparar y crear solicitud de extracción**.
+6. Establece el título de la solicitud de extracción como: `Added spinup-destroy.yml workflow` y haz clic en `Crear solicitud de extracción`.
 
-We will cover the key functionality below and then put the workflow to use by applying a label to the pull request.
+A continuación, cubriremos la funcionalidad clave y luego pondremos en uso el flujo de trabajo aplicando una etiqueta a la solicitud de extracción.
 
-This new workflow has two jobs:
+Este nuevo flujo de trabajo tiene dos trabajos:
 
-1. **Set up Azure resources** will run if the pull request contains a label with the name "spin up environment".
-2. **Destroy Azure resources** will run if the pull request contains a label with the name "destroy environment".
+1. **Configurar recursos de Azure** se ejecutará si la solicitud de extracción contiene una etiqueta con el nombre "iniciar entorno".
+2. **Destruir recursos de Azure** se ejecutará si la solicitud de extracción contiene una etiqueta con el nombre "destruir entorno".
 
-In addition to each job, there's a few global environment variables:
+Además de cada trabajo, hay algunas variables de entorno globales:
 
-- `AZURE_RESOURCE_GROUP`, `AZURE_APP_PLAN`, and `AZURE_WEBAPP_NAME` are names for our resource group, app service plan, and web app, respectively, which we'll reference over multiple steps and workflows
-- `AZURE_LOCATION` lets us specify the [region](https://azure.microsoft.com/en-us/global-infrastructure/regions/) for the data centers, where our app will ultimately be deployed.
+- `AZURE_RESOURCE_GROUP`, `AZURE_APP_PLAN` y `AZURE_WEBAPP_NAME` son nombres para nuestro grupo de recursos, plan de servicio de la aplicación y aplicación web, respectivamente, a los que haremos referencia en múltiples pasos y flujos de trabajo.
+- `AZURE_LOCATION` nos permite especificar la [región](https://azure.microsoft.com/en-us/global-infrastructure/regions/) para los centros de datos, donde finalmente se desplegará nuestra aplicación.
 
-**Setting up Azure resources**
 
-The first job sets up the Azure resources as follows:
+**Configuración de recursos de Azure**
 
-1. Logs into your Azure account with the [`azure/login`](https://github.com/Azure/login) action. The `AZURE_CREDENTIALS` secret you created earlier is used for authentication.
-1. Creates an [Azure resource group](https://docs.microsoft.com/en-us/azure/azure-resource-manager/management/overview#resource-groups) by running [`az group create`](https://docs.microsoft.com/en-us/cli/azure/group?view=azure-cli-latest#az-group-create) on the Azure CLI, which is [pre-installed on the GitHub-hosted runner](https://help.github.com/en/actions/reference/software-installed-on-github-hosted-runners).
-1. Creates an [App Service plan](https://docs.microsoft.com/en-us/azure/app-service/overview-hosting-plans) by running [`az appservice plan create`](https://docs.microsoft.com/en-us/cli/azure/appservice/plan?view=azure-cli-latest#az-appservice-plan-create) on the Azure CLI.
-1. Creates a [web app](https://docs.microsoft.com/en-us/azure/app-service/overview) by running [`az webapp create`](https://docs.microsoft.com/en-us/cli/azure/webapp?view=azure-cli-latest#az-webapp-create) on the Azure CLI.
-1. Configures the newly created web app to use [GitHub Packages](https://help.github.com/en/packages/publishing-and-managing-packages/about-github-packages) by using [`az webapp config`](https://docs.microsoft.com/en-us/cli/azure/webapp/config?view=azure-cli-latest) on the Azure CLI. Azure can be configured to use its own [Azure Container Registry](https://docs.microsoft.com/en-us/azure/container-registry/), [DockerHub](https://docs.docker.com/docker-hub/), or a custom (private) registry. In this case, we'll configure GitHub Packages as a custom registry.
+El primer trabajo configura los recursos de Azure de la siguiente manera:
 
-**Destroying Azure resources**
+1. Inicia sesión en tu cuenta de Azure con la acción [`azure/login`](https://github.com/Azure/login). El secreto `AZURE_CREDENTIALS` que creaste anteriormente se utiliza para la autenticación.
+1. Crea un [grupo de recursos de Azure](https://docs.microsoft.com/en-us/azure/azure-resource-manager/management/overview#resource-groups) ejecutando [`az group create`](https://docs.microsoft.com/en-us/cli/azure/group?view=azure-cli-latest#az-group-create) en la CLI de Azure, que está [preinstalada en el runner hospedado de GitHub](https://help.github.com/en/actions/reference/software-installed-on-github-hosted-runners).
+1. Crea un [plan de servicio de la aplicación](https://docs.microsoft.com/en-us/azure/app-service/overview-hosting-plans) ejecutando [`az appservice plan create`](https://docs.microsoft.com/en-us/cli/azure/appservice/plan?view=azure-cli-latest#az-appservice-plan-create) en la CLI de Azure.
+1. Crea una [aplicación web](https://docs.microsoft.com/en-us/azure/app-service/overview) ejecutando [`az webapp create`](https://docs.microsoft.com/en-us/cli/azure/webapp?view=azure-cli-latest#az-webapp-create) en la CLI de Azure.
+1. Configura la nueva aplicación web para usar [GitHub Packages](https://help.github.com/en/packages/publishing-and-managing-packages/about-github-packages) utilizando [`az webapp config`](https://docs.microsoft.com/en-us/cli/azure/webapp/config?view=azure-cli-latest) en la CLI de Azure. Azure se puede configurar para usar su propio [Registro de contenedores de Azure](https://docs.microsoft.com/en-us/azure/container-registry/), [DockerHub](https://docs.docker.com/docker-hub/) o un registro personalizado (privado). En este caso, configuraremos GitHub Packages como un registro personalizado.
 
-The second job destroys Azure resources so that you do not use your free minutes or incur billing. The job works as follows:
 
-1. Logs into your Azure account with the [`azure/login`](https://github.com/Azure/login) action. The `AZURE_CREDENTIALS` secret you created earlier is used for authentication.
-1. Deletes the resource group we created earlier using [`az group delete`](https://docs.microsoft.com/en-us/cli/azure/group?view=azure-cli-latest#az-group-delete) on the Azure CLI.
+**Destrucción de recursos de Azure**
 
-### :keyboard: Activity 2: Apply labels to create resources
+El segundo trabajo destruye los recursos de Azure para que no utilices tus minutos gratuitos ni incurras en facturación. El trabajo funciona de la siguiente manera:
 
-1. Edit the `spinup-destroy.yml` file in your open pull request and replace any `<username>` placeholders with your GitHub username. Commit this change directly to the `azure-configuration` branch.
-1. Back in the Pull request, create and apply the `spin up environment` label to your open pull request
-1. Wait for the GitHub Actions workflow to run and spin up your Azure environment. You can follow along in the Actions tab or in the pull request merge box.
-1. Wait about 20 seconds then refresh this page (the one you're following instructions from). [GitHub Actions](https://docs.github.com/en/actions) will automatically update to the next step.
+1. Inicia sesión en tu cuenta de Azure con la acción [`azure/login`](https://github.com/Azure/login). El secreto `AZURE_CREDENTIALS` que creaste anteriormente se utiliza para la autenticación.
+2. Elimina el grupo de recursos que creamos anteriormente utilizando [`az group delete`](https://docs.microsoft.com/en-us/cli/azure/group?view=azure-cli-latest#az-group-delete) en la CLI de Azure.
+
+### :keyboard: Actividad 2: Aplicar etiquetas para crear recursos
+
+1. Edita el archivo `spinup-destroy.yml` en tu solicitud de extracción abierta y reemplaza cualquier marcador `<username>` con tu nombre de usuario de GitHub. Haz commit a este cambio directamente en la rama `azure-configuration`.
+2. De vuelta en la solicitud de extracción, crea y aplica la etiqueta `spin up environment` a tu solicitud de extracción abierta.
+3. Espera a que se ejecute el flujo de trabajo de GitHub Actions y se inicie tu entorno de Azure. Puedes seguir el progreso en la pestaña de Acciones o en el cuadro de fusión de la solicitud de extracción.
+4. Espera unos 20 segundos y luego actualiza esta página (la que estás siguiendo las instrucciones). [GitHub Actions](https://docs.github.com/en/actions) se actualizará automáticamente al siguiente paso.
+
+Haz lo mismo.

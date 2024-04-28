@@ -1,23 +1,18 @@
-<!--
-  <<< Author notes: Step 6 >>>
-  Start this step by acknowledging the previous step.
-  Define terms and link to docs.github.com.
--->
+## Paso 6: Despliegue en producción
 
-## Step 6: Production deployment
+_¡Buen trabajo! :sparkle:_
 
-_Nice work! :sparkle:_
+¡Excelente trabajo, lo has logrado! Deberías poder ver la imagen de tu contenedor en la sección **Paquetes** de tu cuenta en la página del repositorio de stemdo. Puedes obtener la URL de despliegue en el registro de acciones, al igual que la URL de preparación.
 
-Great work, you've done it! You should be able to see your container image in the **Packages** section of your account on the main repository page. You can get the deployment URL in the Actions log, just like the staging URL.
+### El entorno en la nube
 
-### The cloud environment
+A lo largo del curso, has creado recursos que, si se dejan sin supervisión, podrían generar facturación o consumir tus minutos gratuitos del proveedor de la nube. Una vez que hayas verificado tu aplicación en producción, ¡desmontemos esos entornos para que puedas conservar tus minutos para seguir aprendiendo!
 
-Throughout the course you've spun up resources that, if left unattended, could incur billing or consume your free minutes from the cloud provider. Once you have verified your application in production, let's tear down those environments so that you can keep your minutes for more learning!
 
-### :keyboard: Activity 1: Destroy any running resources so you don't incur charges
+### :keyboard: Actividad 1: Destruye cualquier recurso en ejecución para que no incurras en cargos
 
-1. Create and apply the `destroy environment` label to your merged `production-deployment-workflow` pull request. If you have already closed the tab with your pull request, you can open it again by clicking **Pull requests** and then clicking the **Closed** filter to view merged pull requests.
+1. Crea y aplica la etiqueta `destroy environment` a tu solicitud de extracción fusionada `production-deployment-workflow`. Si ya has cerrado la pestaña con tu solicitud de extracción, puedes abrirla nuevamente haciendo clic en **Solicitudes de extracción** y luego haciendo clic en el filtro **Cerradas** para ver las solicitudes de extracción fusionadas.
 
-Now that you've applied the proper label, let's wait for the GitHub Actions workflow to complete. When it's finished, you can confirm that your environment has been destroyed by visiting your app's URL, or by logging into the Azure portal to see it is not running.
+Ahora que has aplicado la etiqueta adecuada, esperemos a que el flujo de trabajo de GitHub Actions se complete. Cuando haya terminado, puedes confirmar que tu entorno ha sido destruido visitando la URL de tu aplicación o iniciando sesión en el portal de Azure para verificar que no esté en ejecución.
 
-2. Wait about 20 seconds then refresh this page (the one you're following instructions from). [GitHub Actions](https://docs.github.com/en/actions) will automatically update to the next step.
+2. Espera unos 20 segundos y luego actualiza esta página (la que estás siguiendo las instrucciones). [GitHub Actions](https://docs.github.com/en/actions) se actualizará automáticamente al siguiente paso.

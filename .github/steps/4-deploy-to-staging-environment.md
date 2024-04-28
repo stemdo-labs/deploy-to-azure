@@ -1,23 +1,17 @@
-<!--
-  <<< Author notes: Step 4 >>>
-  Start this step by acknowledging the previous step.
-  Define terms and link to docs.github.com.
--->
+## Paso 4: Despliegue en un entorno de preparación basado en etiquetas
 
-## Step 4: Deploy to a staging environment based on labels
+_¡Bien hecho, has utilizado un flujo de trabajo para iniciar tu entorno de Azure! :dancer:_
 
-_Nicely done, you used a workflow to spin up your Azure environment :dancer:_
+Ahora que la configuración adecuada y los archivos de flujo de trabajo están presentes, ¡vamos a probar nuestras acciones! En este paso, hay un pequeño cambio en el juego. ¡Una vez que agregues la etiqueta apropiada a tu solicitud de extracción, deberías poder ver el despliegue!
 
-Now that the proper configuration and workflow files are present, let's test our actions! In this step, there's a small change to the game. Once you add the appropriate label to your pull request, you should be able to see the deployment!
+1. Crea una nueva rama llamada `staging-test` desde `stemdo` utilizando los mismos pasos que hiciste para la rama anterior `azure-configuration`.
+1. Edita el archivo `.github/workflows/deploy-staging.yml`, y reemplaza cada `<nombredeusuario>` con tu nombre de usuario de GitHub.
+1. Haz commit de ese cambio en la nueva rama `staging-test`.
+1. Ve a la pestaña de Solicitudes de extracción y debería haber un banner amarillo con la rama `staging-test` para `Comparar y crear solicitud de extracción`. Una vez que se abra la solicitud de extracción, haz clic en `Crear solicitud de extracción`.
 
-1. Create a new branch named `staging-test` from `main` using the same steps as you did for the previous `azure-configuration` branch.
-1. Edit the `.github/workflows/deploy-staging.yml` file, and replace every `<username>` with your GitHub username.
-1. Commit that change to the new `staging-test` branch.
-1. Go to the Pull requests tab and there should be a yellow banner with the `staging-test` branch to `Compare & pull request`. Once the pull request is opened up, click `Create pull request`.
+### :keyboard: Actividad 1: Agrega la etiqueta adecuada a tu solicitud de extracción
 
-### :keyboard: Activity 1: Add the proper label to your pull request
-
-1. Ensure that the `GITHUB_TOKEN` for this repository has read and write permissions under **Workflow permissions**. [Learn more](https://docs.github.com/en/actions/security-guides/automatic-token-authentication#modifying-the-permissions-for-the-github_token). This is required for your workflow to be able to upload your image to the container registry.
-1. Create and apply the `stage` label to your open pull request
-1. Wait for the GitHub Actions workflow to run and deploy the application to your Azure environment. You can follow along in the Actions tab or in the pull request merge box. The deployment may take a few moments but you've done the right thing. Once the deployment is successful, you'll see green check marks for each run, and you'll see a URL for your deployment. Play the game!
-1. Wait about 20 seconds then refresh this page (the one you're following instructions from). [GitHub Actions](https://docs.github.com/en/actions) will automatically update to the next step.
+1. Asegúrate de que el `GITHUB_TOKEN` para este repositorio tenga permisos de lectura y escritura en **Permisos de flujo de trabajo**. [Aprende más](https://docs.github.com/en/actions/security-guides/automatic-token-authentication#modifying-the-permissions-for-the-github_token). Esto es necesario para que tu flujo de trabajo pueda cargar tu imagen en el registro de contenedores.
+1. Crea y aplica la etiqueta `stage` a tu solicitud de extracción abierta.
+1. Espera a que se ejecute el flujo de trabajo de GitHub Actions y despliegue la aplicación en tu entorno de Azure. Puedes seguir el progreso en la pestaña de Acciones o en el cuadro de fusión de la solicitud de extracción. El despliegue puede tardar unos momentos, pero has hecho lo correcto. Una vez que el despliegue sea exitoso, verás marcas de verificación verdes para cada ejecución, y verás una URL para tu despliegue. ¡Juega el juego!
+1. Espera unos 20 segundos y luego actualiza esta página (la que estás siguiendo las instrucciones). [GitHub Actions](https://docs.github.com/en/actions) se actualizará automáticamente al siguiente paso.

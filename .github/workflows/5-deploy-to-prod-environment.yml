@@ -1,6 +1,6 @@
 name: Step 5, Test the deploy to staging workflow
 
-# This step triggers after a pull requst is merged to `main`.
+# This step triggers after a pull requst is merged to `stemdo`.
 
 # This will run after the "Deploy to production"" workflow
 # completes on the production-deployment-workflow branch
@@ -10,7 +10,7 @@ on:
   workflow_run:
     workflows: ["Deploy to production"]
     types: [completed]
-    branches: [main]
+    branches: [stemdo]
 
 permissions:
   # Need `contents: read` to checkout the repository.
@@ -18,7 +18,7 @@ permissions:
   contents: write
 
 jobs:
-  # Get the current step to only run the main job when the learner is on the same step.
+  # Get the current step to only run the stemdo job when the learner is on the same step.
   get_current_step:
     name: Check current step number
     runs-on: ubuntu-latest
@@ -61,3 +61,4 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           from_step: 5
           to_step: 6
+          base_branch_name: stemdo

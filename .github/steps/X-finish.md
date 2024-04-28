@@ -1,26 +1,21 @@
-<!--
-  <<< Author notes: Finish >>>
-  Review what we learned, ask for feedback, provide next steps.
--->
+## Conclusión
 
-## Finish
+![¡Felicidades, has completado este curso!](https://octodex.github.com/images/octdrey-catburn.jpg)
 
-<img src=https://octodex.github.com/images/octdrey-catburn.jpg alt=celebrate width=300 align=right>
+### ¡Felicidades, has completado este curso!
 
-### Congratulations, you've completed this course!
+Aquí tienes un resumen de todas las tareas que has realizado en tu repositorio:
 
-Here's a recap of all the tasks you've accomplished in your repository:
+- Activar un trabajo basado en etiquetas
+- Configurar el entorno de Azure
+- Iniciar el entorno basado en etiquetas
+- Desplegar en un entorno de preparación basado en etiquetas
+- Desplegar en un entorno de producción basado en etiquetas
+- Destruir el entorno basado en etiquetas
 
-- Trigger a job based on labels
-- Set up the Azure environment
-- Spin up environment based on labels
-- Deploy to a staging environment based on labels
-- Deploy to a production environment based on labels
-- Destroy environment based on labels
+### ¿Qué sigue?
 
-### What's next?
-
-- [We'd love to hear what you thought of this course](https://github.com/orgs/skills/discussions/categories/deploy-to-azure).
-- [Take another GitHub Skills Course](https://github.com/skills).
-- [Read the GitHub Getting Started docs](https://docs.github.com/en/get-started).
-- To find projects to contribute to, check out [GitHub Explore](https://github.com/explore).
+- [Nos encantaría saber qué opinas de este curso](https://github.com/orgs/skills/discussions/categories/deploy-to-azure).
+- [Realiza otro curso de habilidades de GitHub](https://github.com/skills).
+- [Lee la documentación de GitHub para empezar](https://docs.github.com/en/get-started).
+- Para encontrar proyectos en los que contribuir, visita [GitHub Explore](https://github.com/explore).
